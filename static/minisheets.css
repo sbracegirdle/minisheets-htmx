@@ -1,0 +1,187 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-size: var(--base-font-size);
+
+  --base-font-size: 16px;
+
+  /* css vars for spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+
+  /* css vars for colors */
+  --black: #000;
+  --white: #fff;
+
+  /* Nice blue green yellow red etc */
+  --blue: #007bff;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #28a745;
+
+  /* Grays */
+  --gray-1: #f8f9fa;
+  --gray-2: #e9ecef;
+  --gray-3: #dee2e6;
+  --gray-4: #ced4da;
+  --gray-5: #adb5bd;
+
+  /* Opacity, exponential */
+  --darker-1: rgba(0, 0, 0, 0.1);
+  --darker-2: rgba(0, 0, 0, 0.2);
+  --darker-3: rgba(0, 0, 0, 0.4);
+  --darker-4: rgba(0, 0, 0, 0.8);
+  --lighter-1: rgba(255, 255, 255, 0.1);
+  --lighter-2: rgba(255, 255, 255, 0.2);
+  --lighter-3: rgba(255, 255, 255, 0.4);
+  --lighter-4: rgba(255, 255, 255, 0.8);
+}
+
+button {
+  background: var(--white);
+  border: 1px solid var(--gray-2);
+  border-radius: 4px;
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-size: var(--base-font-size);
+
+  &:hover {
+    background: var(--gray-2);
+  }
+
+  /* small size */
+  &.small {
+    padding: var(--space-1) var(--space-2);
+  }
+
+  &.tertiary {
+    border: 1px solid transparent;
+    background: transparent;
+
+    &:hover {
+      border: 1px solid var(--gray-2);
+    }
+  }
+}
+
+input {
+  background: var(--white);
+  border: 1px solid var(--gray-2);
+  border-radius: 4px;
+  padding: var(--space-2) var(--space-4);
+  transition: all 0.2s ease-in-out;
+  font-size: var(--base-font-size);
+
+  &:focus {
+    outline: none;
+    border: 1px solid var(--blue);
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1200px;
+  margin: var(--space-4) auto;
+
+  & header {
+    background: var(--green);
+    border-radius: var(--space-2);
+    padding: var(--space-2) var(--space-2);
+    color: var(--lighter-4);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    left: 0;
+
+    & h1 {
+      margin: 0;
+      flex: 1;
+
+      /* invisible input */
+      & input {
+        background: transparent;
+        border: 1px solid transparent;
+        outline: none;
+        color: var(--lighter-4);
+        font-size: 1.5rem;
+        font-weight: bold;
+        width: 100%;
+        margin: 0;
+        min-width: 100%;
+        box-sizing: border-box;
+      }
+    }
+
+    & input {
+      margin: 0 var(--space-2);
+      min-width: 180px;
+      max-width: 300px;
+    }
+  }
+
+  & table {
+    width: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: var(--space-3) 0;
+
+    & td,
+    & th {
+      background: var(--white);
+      border-collapse: collapse;
+      border-spacing: 0;
+      padding: 0;
+      text-align: left;
+      min-width: 100px;
+    }
+
+    & th input,
+    & td input {
+      /* Blend in with the cell */
+      background: transparent;
+      outline: none;
+      border: 1px solid transparent;
+      height: 100%;
+      /* fill available widtg but don't overflow */
+      width: 100%;
+      box-sizing: border-box;
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+    }
+
+    & th input {
+      font-weight: bold;
+      width: calc(100% - 32px);
+    }
+
+    /* Table body */
+    & tbody {
+      & tr:nth-child(odd) td {
+        background: var(--gray-1);
+        border-bottom: 1px solid var(--gray-2);
+      }
+    }
+
+    /* Footer */
+    & tfoot {
+      & td {
+        padding: var(--space-2) var(--space-4);
+      }
+    }
+  }
+}

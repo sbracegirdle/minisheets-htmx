@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>minisheets</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='minisheets.css') }}"
+    />
+    <script src="https://unpkg.com/htmx.org@1.9.6/dist/htmx.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>
+          <input
+            type="text"
+            value="{{ sheet.title }}"
+            name="sheet_title"
+            title="Spreadsheet title"
+            aria-label="Spreadsheet title"
+            hx-post="/sheet/{{ sheet.id }}/title"
+            hx-trigger="keyup changed delay:500ms"
+          />
+        </h1>
+        <form>
+          <input
+            type="text"
+            placeholder="Search"
+            value="{{ sheet.search_string }}"
+            name="search_string"
+            title="Search in spreadsheet"
+            aria-label="Search in spreadsheet"
+            hx-post="/sheet/{{ sheet.id }}/search"
+            hx-trigger="keyup changed delay:500ms"
+            hx-target="table"
+            hx-select="table"
+            hx-swap="outerHTML"
+          />
+        </form>
+      </header>
+
+      <table>
+        <thead>
+          <tr>
+            {% for column in sheet.columns %}
+            <th>
+              <input
+                type="text"
+                name="column_name"
+                value="{{ column['name'] }}"
+                title="Edit column name"
+                aria-label="Edit column name"
+                hx-post="/sheet/{{ sheet.id }}/column/{{ column['id'] }}"
+                hx-trigger="keyup changed delay:500ms"
+              />
+              <button
+                class="tertiary small"
+                title="Remove column"
+                aria-label="Remove column"
+                hx-delete="/sheet/{{ sheet.id }}/column/{{ column['id'] }}"
+                hx-target="table"
+                hx-select="table"
+                hx-swap="outerHTML"
+              >x</button>
+            </th>
+            {% endfor %}
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in sheet.data %}
+            <tr>
+              {% for column in sheet.columns %}
+              <td>
+                <input
+                  type="text"
+                  name="cell_value"
+                  value="{{ row[column['id']] }}"
+                  title="Edit cell value"
+                  aria-label="Edit cell value"
+                  hx-post="/sheet/{{ sheet.id }}/row/{{ row['id'] }}/column/{{ column['id'] }}"
+                  hx-trigger="keyup changed delay:500ms"
+                  hx-target="tfoot"
+                  hx-select="tfoot"
+                  hx-swap="outerHTML"
+                />
+              </td>
+              {% endfor %}
+              <td><button
+                class="small"
+                hx-delete="/sheet/{{ sheet.id }}/row/{{ row['id'] }}"
+                title="Delete row"
+                aria-label="Delete row"
+                hx-target="table"
+                hx-select="table"
+                hx-swap="outerHTML"
+              >x</button></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot id="">
+          <tr>
+            {% for footer in footer_values %}
+            <!-- if footer.type count -->
+            {% if footer.type == 'count' %}
+            <td><em>Count: </em><span></span>{{ footer.value }}</span></td>
+            <!-- else if sum -->
+            {% elif footer.type == 'sum' %}
+            <td><em>Sum: </em><span>{{ footer.value }}</span></td>
+            {% endif %} {% endfor %}
+          </tr>
+        </tfoot>
+      </table>
+      <div>
+        <button
+          title="Add row"
+          aria-label="add row"
+          hx-post="/sheet/{{ sheet.id }}/row"
+          hx-target="table"
+          hx-select="table"
+          hx-swap="outerHTML"
+        >Add row</button>
+        <button
+          title="Add column"
+          aria-label="add column"
+          hx-post="/sheet/{{ sheet.id }}/column"
+          hx-target="table"
+          hx-select="table"
+          hx-swap="outerHTML"
+        >Add column</button>
+      </div>
+    </main>
+  </body>
+</html>
